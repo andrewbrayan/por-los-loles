@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💕¿Quieres Salir Conmigo?💕😍</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.onload=null; this.removeAttribute('media');"
+      fetchpriority="high"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      />
+    </noscript>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              clifford: "#da373d",
+            },
+          },
+        },
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      html {
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      class="flex flex-col gap-4 justify-center items-center h-screen text-white bg-gradient-to-tr from-purple-800 to-slate-800"
+    >
+      <h1 class="text-6xl font-bold uppercase text-center">
+        Un brindis por un mejor resto de año
+      </h1>
+      <h2 class="text-4xl font-bold uppercase text-center">
+        ¿Aceptas mi propuesta?
+      </h2>
+      <img src="assets/giphy.gif" alt="SIII" width="240" />
+      <p class="text-center">Has click sobre el boton con tu respuesta.</p>
+      <div class="flex gap-8 items-center">
+        <button
+          id="sip"
+          class="py-2 px-8 w-fit bg-green-600 rounded-lg text-xl font-bold cursor-pointer"
+        >
+          SI!
+        </button>
+        <button
+          id="nop"
+          class="py-2 px-8 bg-red-600 rounded-lg text-xl font-bold transition-all cursor-pointer"
+        >
+          NO 😢
+        </button>
+      </div>
+    </main>
+
+    <script>
+      const url =
+        "https://api.twilio.com/2010-04-01/Accounts/AC0b6e4b9ca32629c627973da759ecb862/Messages.json";
+      const auth =
+        "Basic QUMwYjZlNGI5Y2EzMjYyOWM2Mjc5NzNkYTc1OWVjYjg2MjpkNWVjYzMyOWM4ODhkZjhhMDBkNzZmMjEwNGYwYjJhYg=="; // Authorization header
+
+      const toNumber = "+573143305918";
+      const fromNumber = "+15642242260";
+      const bodyMessage = "Ayyy mio mio entro a la pag";
+
+      const body = new URLSearchParams({
+        To: toNumber,
+        From: fromNumber,
+        Body: bodyMessage,
+      });
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: auth,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: body.toString(),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success:", data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      const noButton = document.getElementById("nop");
+      const siButton = document.getElementById("sip");
+      let buttonTextList = [
+        "Espera... ¿segura?",
+        "¿De verdad quieres hacerlo?",
+        "¡Peligro! ⚠️",
+        "Vamo' a Calmarno",
+        "Espera un momento... 😭",
+        "No te precipites 😥",
+        "¿Estás segura?",
+        "⚠️ ¡No toques esto! ⚠️",
+        "Piénsalo un poco mas",
+        "Piensa antes de actuar",
+        "¡Cuidado! Botón peligroso",
+      ];
+
+      let count = 0;
+
+      noButton.addEventListener("mouseenter", () => {
+        if (count < buttonTextList.length) {
+          noButton.innerText = buttonTextList[count];
+
+          const maxWidth = window.innerWidth - noButton.offsetWidth;
+          const maxHeight = window.innerHeight - noButton.offsetHeight;
+
+          const randomX = Math.floor(Math.random() * maxWidth);
+          const randomY = Math.floor(Math.random() * maxHeight);
+
+          count++;
+          noButton.style.position = "absolute";
+          noButton.style.left = `${randomX}px`;
+          noButton.style.top = `${randomY}px`;
+        } else {
+          noButton.parentElement.classList.add("flex-col");
+          noButton.innerText = "Vale... ¿Entonces es un NO Definitivo?";
+          noButton.style.position = "static";
+          noButton.classList.add("pos-no");
+        }
+      });
+
+      noButton.addEventListener("click", ($event) => {
+        if ($event.target.classList.contains("pos-no")) {
+          Swal.fire({
+            title: "Entiendo, Es NO entonces",
+            text: "Vale, estoy muy triste pero entiendo, espero de todo corazon que estes mejor pronto.",
+            icon: "error",
+            confirmButtonText: "Chau 😢",
+          }).then(() => {
+            const url =
+              "https://api.twilio.com/2010-04-01/Accounts/AC0b6e4b9ca32629c627973da759ecb862/Messages.json";
+            const auth =
+              "Basic QUMwYjZlNGI5Y2EzMjYyOWM2Mjc5NzNkYTc1OWVjYjg2MjpkNWVjYzMyOWM4ODhkZjhhMDBkNzZmMjEwNGYwYjJhYg=="; // Authorization header
+
+            const toNumber = "+573143305918";
+            const fromNumber = "+15642242260";
+            const bodyMessage = "Dijo que No :c";
+
+            const body = new URLSearchParams({
+              To: toNumber,
+              From: fromNumber,
+              Body: bodyMessage,
+            });
+
+            fetch(url, {
+              method: "POST",
+              headers: {
+                Authorization: auth,
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: body.toString(),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log("Success:", data);
+                location.href = "https://www.youtube.com/watch?v=PIh2xe4jnpk";
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                location.href = "https://www.youtube.com/watch?v=PIh2xe4jnpk";
+              });
+          });
+        } else {
+          if (count < buttonTextList.length) {
+            noButton.innerText = buttonTextList[count];
+
+            const maxWidth = window.innerWidth - noButton.offsetWidth;
+            const maxHeight = window.innerHeight - noButton.offsetHeight;
+
+            const randomX = Math.floor(Math.random() * maxWidth);
+            const randomY = Math.floor(Math.random() * maxHeight);
+
+            count++;
+            noButton.style.position = "absolute";
+            noButton.style.left = `${randomX}px`;
+            noButton.style.top = `${randomY}px`;
+          } else {
+            noButton.parentElement.classList.add("flex-col");
+            noButton.innerText = "Vale... ¿Entonces es un NO Definitivo?";
+            noButton.style.position = "static";
+            noButton.classList.add("pos-no");
+          }
+        }
+      });
+
+      siButton.addEventListener("click", () => {
+        Swal.fire({
+          title: "❤️",
+          text: "Notificacion enviada!",
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => {
+          const url =
+            "https://api.twilio.com/2010-04-01/Accounts/AC0b6e4b9ca32629c627973da759ecb862/Messages.json";
+          const auth =
+            "Basic QUMwYjZlNGI5Y2EzMjYyOWM2Mjc5NzNkYTc1OWVjYjg2MjpkNWVjYzMyOWM4ODhkZjhhMDBkNzZmMjEwNGYwYjJhYg=="; // Authorization header
+
+          const toNumber = "+573143305918";
+          const fromNumber = "+15642242260";
+          const bodyMessage = "Dijo que sii!!";
+
+          const body = new URLSearchParams({
+            To: toNumber,
+            From: fromNumber,
+            Body: bodyMessage,
+          });
+
+          fetch(url, {
+            method: "POST",
+            headers: {
+              Authorization: auth,
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: body.toString(),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Success:", data);
+              window.location.href = "/acepto";
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              window.location.href = "/acepto";
+            });
+        });
+      });
+    </script>
+  </body>
+</html>
